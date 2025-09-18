@@ -50,26 +50,26 @@ async def main():
     # Run the crew
     crew_output = await kickoff_crew()
 
-    # ✅ Extract data from CrewOutput
+    # Extract data
     if hasattr(crew_output, "raw"):
         results = crew_output.raw
     elif hasattr(crew_output, "results"):
         results = crew_output.results
     else:
         try:
-            # Fallback: convert to JSON-safe
             results = json.loads(str(crew_output))
         except Exception:
             results = {"output": str(crew_output)}
 
-    # Save to file
-    output_dir = Path("outputs")
-    output_dir.mkdir(exist_ok=True)
-    fp = output_dir / "health_news.json"
+    # Save to /tmp (writable on HF Spaces)
+    fp = Path("/tmp/health_news.json")
     fp.write_text(json.dumps(results, indent=2, ensure_ascii=False), encoding="utf-8")
 
     logger.info(f"✅ Saved results to {fp}")
 
+    return results  # so UI can also read it directly
+
 if __name__ == "__main__":
     asyncio.run(main())
+
 
