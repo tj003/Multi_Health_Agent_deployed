@@ -5,7 +5,10 @@ COPY requirements.txt .
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-# ✅ Redirect all local data/cache paths to /app/.local
+# ✅ Create writable local dirs for crewai
+RUN mkdir -p /app/.local /app/.cache && chmod -R 777 /app
+
+# ✅ Point HOME + XDG dirs to /app
 ENV HOME=/app
 ENV XDG_DATA_HOME=/app/.local
 ENV XDG_CACHE_HOME=/app/.cache
