@@ -18,7 +18,11 @@
 #     return {"status": "ok"}
 from fastapi import FastAPI
 from pydantic import BaseModel
+os.environ["CREWAI_STORAGE_PATH"] = "/tmp/crewai_data"
 from src.pipelines.orchestrator import kickoff_crew
+import os
+
+
 
 app = FastAPI()
 
